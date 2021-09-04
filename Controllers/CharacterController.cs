@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Dotnet.Models;
+using Dotnet.Services.CharacterService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dotnet.Controllers
@@ -11,35 +13,38 @@ namespace Dotnet.Controllers
     [Route("[controller]")]
     public class CharacterController : ControllerBase
     {
-        private static List<Character> characters = new List<Character>{
-            new Character(),
-            new Character{Id = 1 , Name="Sam"}
-        };
+
+        private readonly ICharacterService _characterService;
+
+        public CharacterController(ICharacterService characterService)
+        {
+            _characterService = characterService;
+
+        }
 
         //by móc uywać Swaggera potrzebujemy HttpGet
         [HttpGet]
         // Route po Character/ w tym wyhpadku wszystkiePostacie  - dotyczy tylko tego ActionResulta który jest bezpośrednio po nim
         [Route("wszystkiePostacie")]
-        public ActionResult<List<Character>> Get()
+        public async Task<ActionResult<List<Character>>> Get()
         {
-            return Ok(characters);
+            return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
 
         // id daje nam opcje szukania po tych Ajdikach które mamy w postaciach
-        public ActionResult<Character> GetSingle(int id)
+        public async Task<ActionResult<Character>> GetSingle(int id)
         {
-            return Ok(characters.FirstOrDefault(c => c.Id == id));
+            return Ok(await _characterService.GetCharacterById(id));
         }
 
 
         [HttpPost]
 
-        public ActionResult<List<Character>> AddCharacter(Character newCharacter)
+        public async Task<ActionResult<List<Character>>> AddCharacter(Character newCharacter)
         {
-            characters.Add(newCharacter);
-            return Ok(characters);
+            return Ok(await _characterService.AddCharacter(newCharacter));
         }
     }
 }
