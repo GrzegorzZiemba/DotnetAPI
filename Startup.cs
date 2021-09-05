@@ -33,6 +33,7 @@ namespace Dotnet
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dotnet", Version = "v1" });
             });
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ICharacterService, CharacterService>();
         }
 
