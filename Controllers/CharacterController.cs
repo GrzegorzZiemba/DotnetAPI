@@ -26,7 +26,7 @@ namespace Dotnet.Controllers
         [HttpGet]
         // Route po Character/ w tym wyhpadku wszystkiePostacie  - dotyczy tylko tego ActionResulta który jest bezpośrednio po nim
         [Route("wszystkiePostacie")]
-        public async Task<ActionResult<List<Character>>> Get()
+        public async Task<ActionResult<ServiceResponse<List<Character>>>> Get()
         {
             return Ok(await _characterService.GetAllCharacters());
         }
@@ -34,7 +34,7 @@ namespace Dotnet.Controllers
         [HttpGet("{id}")]
 
         // id daje nam opcje szukania po tych Ajdikach które mamy w postaciach
-        public async Task<ActionResult<Character>> GetSingle(int id)
+        public async Task<ActionResult<ServiceResponse<Character>>> GetSingle(int id)
         {
             return Ok(await _characterService.GetCharacterById(id));
         }
@@ -42,7 +42,7 @@ namespace Dotnet.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<List<Character>>> AddCharacter(Character newCharacter)
+        public async Task<ActionResult<ServiceResponse<List<Character>>>> AddCharacter(Character newCharacter)
         {
             return Ok(await _characterService.AddCharacter(newCharacter));
         }
